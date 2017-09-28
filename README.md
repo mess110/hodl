@@ -16,3 +16,13 @@ This is a multi currency hodler wallet.
 - [ ] infinite scroll addresses
 - [ ] import mnemonic
 - [ ] fix bcash icon
+
+## Quickstart
+
+```
+yarn install
+yarn start
+
+yarn e2e-start
+yarn e2e
+```
