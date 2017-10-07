@@ -16,6 +16,9 @@ import Philosophy from './Philosophy';
 import Drapes from './Drapes';
 
 if (process.env.NODE_ENV === 'production') {
+  XMLHttpRequest.prototype.open = function() {
+    return false;
+  }
   XMLHttpRequest.prototype.send = function() {
     return false;
   }
