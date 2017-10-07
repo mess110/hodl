@@ -66,16 +66,16 @@ class AddressList extends Component {
             </Menu>
           </Popover>
 
-        <List style={{paddingBottom: 64}}>
+        <List>
           {this.props.addresses.length === 0 &&
             <ListItem primaryText="Tap the logo to choose a coin">
             </ListItem>
           }
           {this.props.addresses.map((address, i) =>
             <div key={address.address}>
-              <Divider />
-              <ListItem primaryText={address.address} style={{wordWrap: 'break-word'}}  onClick={(event) => this.handleTouchTap(event, address)}>
+              <ListItem primaryText={address.address} style={{wordWrap: 'break-word', textAlign: 'center'}}  onClick={(event) => this.handleTouchTap(event, address)}>
               </ListItem>
+              <Divider />
             </div>
           )}
         </List>

@@ -4,6 +4,25 @@ const coinNetworks = {
   bitcoin: defaultNetworks.bitcoin,
   litecoin: defaultNetworks.litecoin,
   dogecoin: defaultNetworks.dogecoin,
+  dash: defaultNetworks.dash,
+  eth: {
+    bip32: {
+        public: 0xffffffff,
+        private: 0xffffffff
+      },
+    pubKeyHash: 0xff,
+    wif: 0xff,
+    ethereum : true
+  },
+  etc: {
+    bip32: {
+        public: 0xffffffff,
+        private: 0xffffffff
+      },
+    pubKeyHash: 0xff,
+    wif: 0xff,
+    ethereum : true
+  },
 }
 
 const networks = [
@@ -26,10 +45,30 @@ const networks = [
     network: coinNetworks.bitcoin
   },
   {
+    name: 'Dash',
+    identifier: 'dash',
+    value: 5,
+    network: coinNetworks.dash,
+  },
+  {
     name: 'Dogecoin',
     identifier: 'dogecoin',
     value: 3,
     network: coinNetworks.dogecoin,
+  },
+  {
+    name: 'Ethereum',
+    identifier: 'ethereum',
+    value: 60,
+    network: coinNetworks.bitcoin,
+    ethereum: true,
+  },
+  {
+    name: 'Ethereum Classic',
+    identifier: 'ethereum-classic',
+    value: 61,
+    network: coinNetworks.bitcoin,
+    ethereum: true,
   },
   {
     name: 'Litecoin',
@@ -60,12 +99,6 @@ const networks = [
     // identifier: 'clams',
     // value: 23,
     // network: window.bitcoin.networks.clam,
-  // },
-  // {
-    // name: 'Dash',
-    // identifier: 'dash',
-    // value: 5,
-    // network: window.bitcoin.networks.dash,
   // },
   // {
     // name: 'Dogecoin',
@@ -288,18 +321,6 @@ const networks = [
     // identifier: 'richcoin',
     // value: 80,
     // network: window.bitcoin.networks.richcoin,
-  // },
-  // {
-    // name: 'Ethereum',
-    // identifier: 'ethereum',
-    // value: 60,
-    // network: window.bitcoin.networks.eth,
-  // },
-  // {
-    // name: 'Ethereum Classic',
-    // identifier: 'ethereum-classic',
-    // value: 61,
-    // network: window.bitcoin.networks.etc,
   // },
   // {
     // name: 'PIVX',

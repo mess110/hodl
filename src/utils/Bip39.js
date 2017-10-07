@@ -16,20 +16,17 @@ export default class Bip39 {
     return this.mnemonic.generate(strength);
   }
 
-  calcBip32Seed(words, networkIndex) {
-    var coin = networks[networkIndex].value;
-
-    // console.log(networks[networkIndex].name);
+  calcBip32Seed(words, network) {
+    var coin = network.value;
 
     var phrase = words;
     var passphrase = '';
     var derivationPath = "m/44'/" + coin + "'/0'/0";
     var path = derivationPath;
-    var network = networks[networkIndex].network;
 
     var properSeed = this.makeProperPhrase(phrase);
     var seed = this.mnemonic.toSeed(properSeed, passphrase);
-    var bip32RootKey = bitcoin.HDNode.fromSeedHex(seed, network);
+    var bip32RootKey = bitcoin.HDNode.fromSeedHex(seed, network.network);
     var bip32ExtendedKey = bip32RootKey;
 
     // Derive the key from the path
@@ -61,42 +58,30 @@ export default class Bip39 {
     return bip32ExtendedKey;
   }
 
-  getAddress(bip32ExtendedKey, index, networkIndex) {
-    var network = networks[networkIndex].network;
+  getAddress(bip32ExtendedKey, index, network) {
     var key = bip32ExtendedKey.derive(index);
-    var i;
 
+    var privKey, pubKey;
     var address;
     if (!network.ethereum) {
       address = key.getAddress().toString();
     } else {
-      var pubData = new bitcoin.ECKey(key.privKey.d, false).pub.toHex();
-      var buffer = new ArrayBuffer(64);
-      var view = new Uint8Array(buffer);
-      var offset = 0;
-      for (i = 2; i < pubData.length; i += 2) {
-        view[offset++] = parseInt(pubData.substr(i, 2), 16);
-      }
-      var addressHex = window.keccak_256(buffer).substr(24).toLowerCase();
-      var checksum = window.keccak_256(addressHex)
-      address = "0x";
-      for (i = 0; i < addressHex.length; i++) {
-        if (parseInt(checksum[i], 16) >= 8) {
-          address += addressHex[i].toUpperCase()
-        } else {
-          address += addressHex[i]
-        }
-      }
+      var privKeyBuffer = key.keyPair.d.toBuffer();
+      privKey = privKeyBuffer.toString('hex');
+      var addressBuffer = window.ethUtil.privateToAddress(privKeyBuffer);
+      var hexAddress = addressBuffer.toString('hex');
+      var checksumAddress = window.ethUtil.toChecksumAddress(hexAddress);
+      address = window.ethUtil.addHexPrefix(checksumAddress);
+      privKey = window.ethUtil.addHexPrefix(privKey);
+      pubKey = window.ethUtil.addHexPrefix(pubKey);
     }
-    var privKey, pubKey;
 
     pubKey = key.getAddress().toString();
-    privKey = key.keyPair.toWIF(network);
-    // if (!network.ethereum) {
-    // } else {
-      // privkey = "0x" + key.privKey.d.toString(16);
-      // pubkey = "0x" + pubkey;
-    // }
+    privKey = key.keyPair.toWIF(network.network);
+    if (network.ethereum) {
+      privKey = "0x" + key.keyPair.d.toString(16);
+      pubKey = "0x" + pubKey;
+    }
 
     return {
       address: address,
