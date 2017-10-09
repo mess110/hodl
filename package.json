@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "license": "MIT",
-  "homepage" : "https://mess110.github.io/hodl",
+  "homepage": "https://mess110.github.io/hodl",
   "dependencies": {
     "material-ui": "^0.19.2",
     "qrcode.react": "^0.7.1",
@@ -13,11 +13,14 @@
     "react-swipeable-views": "^0.12.8"
   },
   "devDependencies": {
+    "gh-pages": "^1.0.0",
     "jest": "^21.2.1",
     "selenium-webdriver": "^3.5.0",
     "webdriver-manager": "^12.0.6"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
