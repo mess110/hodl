@@ -99,7 +99,7 @@ class Seed extends Component {
 
         <GridList cellHeight={48} cols={3}>
           {this.props.words.split(' ').map((word, index) =>
-            <GridTile key={word} title={word} onClick={() => { this.handleOpen(index) }}>
+            <GridTile key={index} title={word} onClick={() => { this.handleOpen(index) }}>
             </GridTile>
           )}
         </GridList>
