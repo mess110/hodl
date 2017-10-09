@@ -13,7 +13,9 @@ import './App.css';
 import Bip39 from '../utils/Bip39';
 import AddressList from './AddressList';
 import Philosophy from './Philosophy';
-import Drapes from './Drapes';
+import Seed from './Seed';
+
+window.DEFAULT_WORD_COUNT = 12;
 
 if (process.env.NODE_ENV === 'production') {
   XMLHttpRequest.prototype.open = function() {
@@ -35,10 +37,12 @@ class App extends Component {
       slideIndex: 0,
       secureRandom: this.bip39.hasSecureRandom(),
       logo: undefined,
-      words: this.bip39.generate(3),
+      words: this.bip39.generate(window.DEFAULT_WORD_COUNT),
       // words: 'stumble offer wisdom',
       showAddressCount: 10,
     };
+
+    this.handler = this.handler.bind(this);
   }
 
   componentDidMount() {
@@ -47,8 +51,17 @@ class App extends Component {
 
   handleToggle = () => this.setState({open: !this.state.open});
 
-  chooseNetwork = (network) => {
+  handler(words) {
+    // e.preventDefault();
     this.setState({
+      words: words,
+    });
+  }
+
+  chooseNetwork = (network) => {
+    this.network = network;
+    this.setState({
+      slideIndex: 0,
       open: false,
       logo: this.coinPath(network),
     });
@@ -89,7 +102,6 @@ class App extends Component {
           <List>
             <MenuItem onClick={() => this.setState({slideIndex: 0, open: false})}>Addresses</MenuItem>
             <MenuItem onClick={() => this.setState({slideIndex: 1, open: false})}>Seed</MenuItem>
-            <MenuItem onClick={() => this.setState({slideIndex: 2, open: false})}>Info</MenuItem>
             <Divider />
             {this.networks.map((network, i) =>
               <ListItem primaryText={network.name} key={network.name}
@@ -100,20 +112,11 @@ class App extends Component {
         </Drawer>
 
         <SwipeableViews index={this.state.slideIndex} onChangeIndex={this.handleChange} style={{paddingTop: 64}} animateHeight={true}>
-          <AddressList addresses={this.addresses}/>
-
-          <div style={{paddingTop: 6, paddingLeft: 12, paddingRight: 12}}>
-            <h3>{this.state.words}</h3>
-          </div>
-
-          <div style={{paddingTop: 6, paddingLeft: 12, paddingRight: 12}}>
-            <h3>About</h3>
-          </div>
+          <AddressList addresses={this.addresses} />
+          <Seed words={this.state.words} bip39={this.bip39} handler={this.handler}/>
         </SwipeableViews>
 
-        <Snackbar
-          open={!this.state.secureRandom}
-          message="No Secure Random"/>
+        <Snackbar open={!this.state.secureRandom} message="No Secure Random"/>
       </div>
     );
   }

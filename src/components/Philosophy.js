@@ -5,7 +5,7 @@ import Checkbox from 'material-ui/Checkbox';
 
 class Philosophy extends Component {
   state = {
-    open: true,
+    open: process.env.NODE_ENV === 'production',
     checked: false
   };
 
@@ -39,8 +39,8 @@ class Philosophy extends Component {
           modal={true}
           open={this.state.open}>
 
-          <p>Think of this as a multi-coin paper wallet generator.</p>
-          <p>You need another wallet to send transactions.</p>
+          <p>Think of this as a multi-coin paper wallet generator</p>
+          <p>You need another wallet to send transactions</p>
           <p>I recommend holding your seed in something like CryptoSteel</p>
       <div>
       <Checkbox

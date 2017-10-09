@@ -1,10 +1,19 @@
 # Hodl Wallet
 
-This is a multi currency hodler wallet.
+*This is experimental software, use at your own risk*
 
-*This wallet can only be used for receiving transactions*
+Read the LICENSE.
+
+If you loose coins using this wallet it is your fault. Be warned, it is easy
+to loose coins.
 
 ## Philosophy
+
+- Nothing is persisted
+- All network connections are blocked
+- Think of this as a multi-coin paper wallet generator
+- You need another wallet to send transactions
+- I recommend holding your seed in something like CryptoSteel
 
 ## Roadmap
 
@@ -12,17 +21,16 @@ This is a multi currency hodler wallet.
 - [x] use crypto icons
 - [x] stop all AJAX requests
 - [x] show qr code
-- [ ] segwit
+- [x] change seed
+- [ ] password protected seed
+- [ ] segwit addresses
 - [ ] infinite scroll addresses
-- [ ] import mnemonic
-- [ ] fix bcash icon
 
 ## Quickstart
 
 ```
 yarn install
 yarn start
-
 yarn e2e-start
 yarn e2e
 ```
