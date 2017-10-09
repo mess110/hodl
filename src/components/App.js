@@ -86,7 +86,7 @@ class App extends Component {
   }
 
   coinPath = (network) => {
-    return 'images/64x64/' + network.identifier + '.png';
+    return 'images/logos/' + network.identifier + '.png';
   }
 
   render() {
