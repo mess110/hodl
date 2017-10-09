@@ -36,3 +36,7 @@ yarn start
 yarn e2e-start
 yarn e2e
 ```
+
+```
+yarn deploy
+```
