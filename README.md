@@ -22,7 +22,9 @@ to loose coins.
 - [x] stop all AJAX requests
 - [x] show qr code
 - [x] change seed
-- [ ] password protected seed
+- [x] password protected seed
+- [ ] fix offline use
+- [ ] update addresses after seed change
 - [ ] segwit addresses
 - [ ] infinite scroll addresses
 

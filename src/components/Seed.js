@@ -5,6 +5,7 @@ import MenuItem from 'material-ui/MenuItem';
 import {GridList, GridTile} from 'material-ui/GridList';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
+import TextField from 'material-ui/TextField';
 
 const dataSource = window.WORDLISTS['english'];
 
@@ -28,7 +29,11 @@ class Seed extends Component {
   handleWordCountChange(value) {
     this.setState({ wordCount: value });
     var words = this.props.bip39.generate(value);
-    this.props.handler(words);
+    this.props.changeWords(words);
+  }
+
+  handlePassphraseChange(value) {
+    this.props.changePassphrase(value);
   }
 
   updateSeed() {
@@ -36,7 +41,7 @@ class Seed extends Component {
     var wordArray = words.split(' ');
     wordArray[this.state.wordIndex] = this.state.newWord;
     this.setState({open: false, newWord: undefined, wordIndex: undefined});
-    this.props.handler(wordArray.join(' '));
+    this.props.changeWords(wordArray.join(' '));
   }
 
   selectWord(word) {
@@ -96,6 +101,8 @@ class Seed extends Component {
           <MenuItem value={21} primaryText="21" />
           <MenuItem value={24} primaryText="24" />
         </SelectField>
+
+        <TextField hintText="Passphrase" fullWidth={true} onChange={(event, value) => { this.handlePassphraseChange(value) }}/>
 
         <GridList cellHeight={48} cols={3}>
           {this.props.words.split(' ').map((word, index) =>

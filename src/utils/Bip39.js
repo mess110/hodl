@@ -16,11 +16,10 @@ export default class Bip39 {
     return this.mnemonic.generate(strength);
   }
 
-  calcBip32Seed(words, network) {
+  calcBip32Seed(words, passphrase, network) {
     var coin = network.value;
 
     var phrase = words;
-    var passphrase = '';
     var derivationPath = "m/44'/" + coin + "'/0'/0";
     var path = derivationPath;
 

@@ -40,9 +40,11 @@ class App extends Component {
       words: this.bip39.generate(window.DEFAULT_WORD_COUNT),
       // words: 'stumble offer wisdom',
       showAddressCount: 10,
+      passphrase: '',
     };
 
-    this.handler = this.handler.bind(this);
+    this.changeWords = this.changeWords.bind(this);
+    this.changePassphrase = this.changePassphrase.bind(this);
   }
 
   componentDidMount() {
@@ -51,10 +53,15 @@ class App extends Component {
 
   handleToggle = () => this.setState({open: !this.state.open});
 
-  handler(words) {
-    // e.preventDefault();
+  changeWords(words) {
     this.setState({
       words: words,
+    });
+  }
+
+  changePassphrase(passphrase) {
+    this.setState({
+      passphrase: passphrase,
     });
   }
 
@@ -66,7 +73,7 @@ class App extends Component {
       logo: this.coinPath(network),
     });
 
-    var extKey = this.bip39.calcBip32Seed(this.state.words, network);
+    var extKey = this.bip39.calcBip32Seed(this.state.words, this.state.passphrase, network);
     this.addresses = [];
     for (var i = 0; i < this.state.showAddressCount; i++) {
       this.addresses.push(this.bip39.getAddress(extKey, i, network));
@@ -113,7 +120,7 @@ class App extends Component {
 
         <SwipeableViews index={this.state.slideIndex} onChangeIndex={this.handleChange} style={{paddingTop: 64}} animateHeight={true}>
           <AddressList addresses={this.addresses} />
-          <Seed words={this.state.words} bip39={this.bip39} handler={this.handler}/>
+          <Seed words={this.state.words} bip39={this.bip39} changeWords={this.changeWords} changePassphrase={this.changePassphrase}/>
         </SwipeableViews>
 
         <Snackbar open={!this.state.secureRandom} message="No Secure Random"/>
