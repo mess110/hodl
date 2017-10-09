@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "license": "MIT",
+  "homepage" : "https://mess110.github.io/hodl",
   "dependencies": {
     "material-ui": "^0.19.2",
     "qrcode.react": "^0.7.1",
