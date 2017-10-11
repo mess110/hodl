@@ -6,6 +6,7 @@ import {GridList, GridTile} from 'material-ui/GridList';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
+import Clipboard from 'react-clipboard.js';
 
 const dataSource = window.WORDLISTS['english'];
 
@@ -48,6 +49,11 @@ class Seed extends Component {
     this.props.changeWords(wordArray.join(' '));
   }
 
+  isButtonDisabled() {
+    // TODO: this is buggy
+    return this.state.newWord === '' || this.state.newWord === undefined || this.state.newWord === null;
+  }
+
   selectWord(word) {
     this.setState({
       newWord: word,
@@ -65,6 +71,7 @@ class Seed extends Component {
         label="Submit"
         primary={true}
         keyboardFocused={true}
+        disabled={this.isButtonDisabled()}
         onClick={() => { this.updateSeed() }}
       />,
     ];
@@ -114,6 +121,13 @@ class Seed extends Component {
             </GridTile>
           )}
         </GridList>
+
+        <Clipboard component="p" option-text={() => { return this.props.words }}>
+          <FlatButton
+            label="Copy"
+            fullWidth={true}
+            primary={true} />
+        </Clipboard>
       </div>
     );
   }

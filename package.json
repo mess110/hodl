@@ -3,11 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "license": "MIT",
-  "homepage" : "https://mess110.github.io/hodl",
+  "homepage": "https://mess110.github.io/hodl",
   "dependencies": {
     "material-ui": "^0.19.2",
     "qrcode.react": "^0.7.1",
     "react": "^16.0.0",
+    "react-clipboard.js": "^1.1.2",
     "react-dom": "^16.0.0",
     "react-scripts": "1.0.13",
     "react-swipeable-views": "^0.12.8"

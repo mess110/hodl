@@ -7,6 +7,7 @@ import Popover from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import QRCode from 'qrcode.react';
+import Clipboard from 'react-clipboard.js';
 
 class AddressList extends Component {
   constructor(props) {
@@ -51,7 +52,9 @@ class AddressList extends Component {
       <div>
         <Dialog title={this.state.qrTitle} modal={false} open={this.state.qrOpen} onRequestClose={this.handleClose} bodyStyle={{textAlign: 'center'}} titleStyle={{textAlign: 'center'}}>
           <QRCode value={this.state.qr} />
-          <p style={{wordWrap: 'break-word'}}>{this.state.qr}</p>
+          <Clipboard component="p" style={{wordWrap: 'break-word'}} option-text={() => { return this.state.qr }}>
+            {this.state.qr}
+          </Clipboard>
         </Dialog>
 
         <Popover
