@@ -9,6 +9,10 @@ import TextField from 'material-ui/TextField';
 
 const dataSource = window.WORDLISTS['english'];
 
+AutoComplete.startsWith = (searchText, key) => {
+  return searchText !== '' && key.indexOf(searchText) === 0;
+}
+
 class Seed extends Component {
   constructor(props) {
     super(props);
@@ -78,8 +82,8 @@ class Seed extends Component {
             Editing word #{this.state.wordIndex + 1}
             <AutoComplete
               hintText="word"
-              filter={AutoComplete.fuzzyFilter}
-              maxSearchResults={3}
+              filter={AutoComplete.startsWith}
+              maxSearchResults={4}
               dataSource={dataSource}
               onNewRequest={(newWord) => { this.selectWord(newWord) }}
               fullWidth={true} />
