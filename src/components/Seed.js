@@ -7,6 +7,7 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import Clipboard from 'react-clipboard.js';
+import QRCode from 'qrcode.react';
 
 const dataSource = window.WORDLISTS['english'];
 
@@ -122,11 +123,8 @@ class Seed extends Component {
           )}
         </GridList>
 
-        <Clipboard component="p" option-text={() => { return this.props.words }}>
-          <FlatButton
-            label="Copy"
-            fullWidth={true}
-            primary={true} />
+        <Clipboard component="p" style={{textAlign: 'center'}} option-text={() => { return this.props.words }}>
+          <QRCode value={this.props.words} />
         </Clipboard>
       </div>
     );
