@@ -89,6 +89,14 @@ export default class Bip39 {
     }
   }
 
+  blankKey() {
+    return {
+      address: '',
+      pubKey: '',
+      privKey: '',
+    }
+  }
+
   hasSecureRandom() {
     return 'crypto' in window && window['crypto'] !== null;
   }

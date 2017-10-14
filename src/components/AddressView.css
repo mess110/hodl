@@ -1,0 +1,16 @@
+.addressIndex {
+  max-width: 100px;
+
+}
+
+.addressIndex input {
+  text-align: center;
+}
+
+.prev {
+  margin-right: 12px;
+}
+
+.next {
+  margin-left: 12px;
+}

@@ -2,18 +2,19 @@ import React, { Component } from 'react';
 import SwipeableViews from 'react-swipeable-views';
 import Drawer from 'material-ui/Drawer';
 import List from 'material-ui/List/List';
-import ListItem from 'material-ui/List/ListItem';
 import MenuItem from 'material-ui/MenuItem';
 import Avatar from 'material-ui/Avatar';
 import Snackbar from 'material-ui/Snackbar';
 import AppBar from 'material-ui/AppBar';
 import Divider from 'material-ui/Divider';
+import Settings from 'material-ui/svg-icons/action/settings';
+import Help from 'material-ui/svg-icons/action/help';
 
-import './App.css';
 import Bip39 from '../utils/Bip39';
-import AddressList from './AddressList';
 import Philosophy from './Philosophy';
 import Seed from './Seed';
+import SeedMenu from './SeedMenu';
+import AddressView from './AddressView';
 
 window.DEFAULT_WORD_COUNT = 12;
 
@@ -30,28 +31,25 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.bip39 = new Bip39();
-    this.networks = this.bip39.getNetworks();
-    this.addresses = [];
+    var networks = this.bip39.getNetworks();
     this.state = {
       open: false,
       slideIndex: 0,
       secureRandom: this.bip39.hasSecureRandom(),
-      logo: undefined,
       words: this.bip39.generate(window.DEFAULT_WORD_COUNT),
       // words: 'stumble offer wisdom',
-      showAddressCount: 10,
+      networks: networks,
       passphrase: '',
     };
+
 
     this.changeWords = this.changeWords.bind(this);
     this.changePassphrase = this.changePassphrase.bind(this);
   }
 
-  componentDidMount() {
-    this.chooseNetwork(this.networks[0]);
+  handleToggle() {
+    this.setState({open: !this.state.open});
   }
-
-  handleToggle = () => this.setState({open: !this.state.open});
 
   changeWords(words) {
     this.setState({
@@ -65,62 +63,91 @@ class App extends Component {
     });
   }
 
-  chooseNetwork = (network) => {
-    this.network = network;
+  chooseNetwork(network) {
     this.setState({
-      slideIndex: 0,
       open: false,
-      logo: this.coinPath(network),
+      slideIndex: 0,
     });
-
-    var extKey = this.bip39.calcBip32Seed(this.state.words, this.state.passphrase, network);
-    this.addresses = [];
-    for (var i = 0; i < this.state.showAddressCount; i++) {
-      this.addresses.push(this.bip39.getAddress(extKey, i, network));
-    }
+    this.addressView.chooseNetwork(network);
   }
 
-  handleChange = (value) => {
+  handleChange(value) {
     this.setState({
       slideIndex: value,
     });
   };
 
-  openDrawer = () => {
+  openDrawer() {
     this.setState({
       open: true,
     });
   }
 
-  coinPath = (network) => {
+  coinPath(network) {
     return 'images/logos/' + network.identifier + '.png';
+  }
+
+  paste() {
+    console.log('hello')
+    this.setState({
+      words: 'pizza pizza pizza'
+    })
   }
 
   render() {
     return (
       <div className="App">
-        <AppBar title="Hodl Wallet" onLeftIconButtonTouchTap={() => this.openDrawer()}
+        <AppBar title="Hodl Wallet"
+          onLeftIconButtonTouchTap={() => this.openDrawer()}
+          iconElementRight={this.state.slideIndex === 1 ? <SeedMenu changeWords={this.changeWords}/> : undefined }
           style={{position: 'fixed'}}
-          iconElementRight={<img src={this.state.logo} className="App-logo" alt="logo" onClick={this.handleToggle}/>}/>
+        />
 
-        <Philosophy />
+        <Philosophy ref={instance => { this.philosophy = instance; }}/>
 
-        <Drawer open={this.state.open} docked={false} onRequestChange={(open) => this.setState({open})}>
+        <Drawer
+          open={this.state.open}
+          docked={false}
+          onRequestChange={(open) => this.setState({open})}>
+
           <List>
-            <MenuItem onClick={() => this.setState({slideIndex: 0, open: false})}>Addresses</MenuItem>
-            <MenuItem onClick={() => this.setState({slideIndex: 1, open: false})}>Seed</MenuItem>
-            <Divider />
-            {this.networks.map((network, i) =>
-              <ListItem primaryText={network.name} key={network.name}
-                onClick={() => this.chooseNetwork(network)} leftAvatar={<Avatar src={this.coinPath(network)} />}>
-              </ListItem>
+            {this.state.networks.map((network, i) =>
+              <MenuItem
+                key={network.name}
+                onClick={() => { this.chooseNetwork(network); }}
+                leftIcon={<Avatar src={this.coinPath(network)} style={{height: 24, width: 24}}/>}
+                primaryText={network.name} />
             )}
+            <Divider />
+            <MenuItem
+              onClick={() => this.setState({slideIndex: 1, open: false})}
+              leftIcon={<Settings />}
+              primaryText="Seed" />
+            <MenuItem
+              onClick={() => this.philosophy.handleOpen() }
+              leftIcon={<Help />}
+              primaryText="About" />
           </List>
+
         </Drawer>
 
-        <SwipeableViews index={this.state.slideIndex} onChangeIndex={this.handleChange} style={{paddingTop: 64}} animateHeight={true}>
-          <AddressList addresses={this.addresses} />
-          <Seed words={this.state.words} bip39={this.bip39} changeWords={this.changeWords} changePassphrase={this.changePassphrase}/>
+        <SwipeableViews
+          index={this.state.slideIndex}
+          onChangeIndex={this.handleChange}
+          style={{paddingTop: 64}}
+          animateHeight={true}
+          disabled={true}>
+
+          <AddressView
+            words={this.state.words}
+            passphrase={this.state.passphrase}
+            ref={instance => { this.addressView = instance; }} />
+
+          <Seed
+            words={this.state.words}
+            changeWords={this.changeWords}
+            changePassphrase={this.changePassphrase}/>
+
         </SwipeableViews>
 
         <Snackbar open={!this.state.secureRandom} message="No Secure Random"/>

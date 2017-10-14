@@ -6,8 +6,9 @@ import {GridList, GridTile} from 'material-ui/GridList';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
-import Clipboard from 'react-clipboard.js';
-import QRCode from 'qrcode.react';
+
+import Bip39 from '../utils/Bip39';
+import Address from './Address.js';
 
 const dataSource = window.WORDLISTS['english'];
 
@@ -18,6 +19,7 @@ AutoComplete.startsWith = (searchText, key) => {
 class Seed extends Component {
   constructor(props) {
     super(props);
+    this.bip39 = new Bip39();
     this.state = {
       wordCount: window.DEFAULT_WORD_COUNT,
       open: false,
@@ -34,7 +36,7 @@ class Seed extends Component {
 
   handleWordCountChange(value) {
     this.setState({ wordCount: value });
-    var words = this.props.bip39.generate(value);
+    var words = this.bip39.generate(value);
     this.props.changeWords(words);
   }
 
@@ -66,19 +68,19 @@ class Seed extends Component {
       <FlatButton
         label="Cancel"
         primary={true}
-        onClick={() => { this.handleClose() }}
-      />,
+        onClick={() => { this.handleClose() }} />,
       <FlatButton
         label="Submit"
         primary={true}
         keyboardFocused={true}
         disabled={this.isButtonDisabled()}
-        onClick={() => { this.updateSeed() }}
-      />,
+        onClick={() => { this.updateSeed() }} />,
     ];
 
     return (
       <div style={{paddingTop: 6, paddingLeft: 12, paddingRight: 12}}>
+        <Address text={this.props.words}/>
+
         <Dialog
           title="New word"
           actions={actions}
@@ -96,14 +98,15 @@ class Seed extends Component {
               onNewRequest={(newWord) => { this.selectWord(newWord) }}
               fullWidth={true} />
           </div>
-        </Dialog>
 
+        </Dialog>
 
         <SelectField
           floatingLabelText="Word Count"
           value={this.state.wordCount}
           fullWidth={true}
           onChange={(event, index, value) => { this.handleWordCountChange(value) }}>
+
           <MenuItem value={3} primaryText="3" />
           <MenuItem value={6} primaryText="6" />
           <MenuItem value={9} primaryText="9" />
@@ -112,20 +115,23 @@ class Seed extends Component {
           <MenuItem value={18} primaryText="18" />
           <MenuItem value={21} primaryText="21" />
           <MenuItem value={24} primaryText="24" />
+
         </SelectField>
 
-        <TextField hintText="Passphrase" fullWidth={true} onChange={(event, value) => { this.handlePassphraseChange(value) }}/>
+        <TextField
+          hintText="Passphrase"
+          fullWidth={true}
+          onChange={(event, value) => { this.handlePassphraseChange(value) }}/>
 
         <GridList cellHeight={48} cols={3}>
           {this.props.words.split(' ').map((word, index) =>
-            <GridTile key={index} title={word} onClick={() => { this.handleOpen(index) }}>
-            </GridTile>
+
+            <GridTile
+              key={index}
+              title={word} onClick={() => { this.handleOpen(index) }} />
+
           )}
         </GridList>
-
-        <Clipboard component="p" style={{textAlign: 'center'}} option-text={() => { return this.props.words }}>
-          <QRCode value={this.props.words} />
-        </Clipboard>
       </div>
     );
   }

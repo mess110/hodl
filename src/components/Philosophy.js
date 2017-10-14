@@ -7,6 +7,7 @@ class Philosophy extends Component {
   state = {
     open: process.env.NODE_ENV === 'production',
     checked: false,
+    disabled: false,
   };
 
   updateCheck() {
@@ -17,18 +18,21 @@ class Philosophy extends Component {
     });
   }
 
-  handleClose = () => {
+  handleClose() {
     this.setState({open: false});
   };
+
+  handleOpen() {
+    this.setState({open: true, checked: true, disabled: true });
+  }
 
   render() {
     const actions = [
       <RaisedButton
-        label="I know what I am doing"
+        label={this.state.disabled === true ? "Ok" : "I know what I am doing"}
         primary={true}
-        onClick={this.handleClose}
-        disabled={!this.state.checked}
-      />
+        onClick={() => { this.handleClose() }}
+        disabled={!this.state.checked} />
     ];
 
     return (
@@ -46,13 +50,16 @@ class Philosophy extends Component {
           <p>Think of this as a multi-coin paper wallet generator</p>
           <p>You need another wallet to send transactions</p>
           <p>I recommend holding your seed in something like CryptoSteel</p>
-      <div>
-      <Checkbox
-                label="I understand"
-                checked={this.state.checked}
-                onCheck={this.updateCheck.bind(this)}
-              />
-      </div>
+
+          <div>
+          { this.state.disabled ? null : <Checkbox
+            label="I understand"
+            checked={this.state.checked}
+            disabled={this.state.disabled}
+            onCheck={this.updateCheck.bind(this)}/>
+          }
+          </div>
+
         </Dialog>
       </div>
     )
