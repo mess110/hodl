@@ -59,6 +59,7 @@ class SeedMenu extends Component {
 
     const previewStyle = {
       width: '100%',
+      maxHeight: 200,
     }
 
     return (
