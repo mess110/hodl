@@ -36,7 +36,7 @@ class SeedMenu extends Component {
   }
 
   handleScan(data) {
-    if (data !== undefined && data !== nula && data !== '') {
+    if (data !== undefined && data !== null && data !== '') {
       if (typeof data === 'string') {
         this.setState({
           result: data,
