@@ -39,7 +39,7 @@ class SeedMenu extends Component {
     this.setState({
       result: data,
     });
-    this.props.changeWords(data);
+    // this.props.changeWords(data);
   }
 
   handleError(err) {
