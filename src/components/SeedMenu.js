@@ -4,7 +4,9 @@ import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
 import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
 import QrReader from 'react-qr-reader';
+import TextField from 'material-ui/TextField';
 
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 
@@ -14,24 +16,33 @@ class SeedMenu extends Component {
     super(props);
     this.state = {
       scanQR: false,
+      pasteSeed: false,
       delay: 100,
       result: 'no result',
+      found: false,
     }
   }
 
   handleClose() {
-    this.setState({scanQR: false});
+    this.setState({
+      scanQR: false,
+      pasteSeed: false,
+      found: false,
+    });
   };
 
 
   paste() {
-    // var words = window.clipboardData.getData('Text');
-    this.props.changeWords('pizza pizza pizza');
+    this.setState({
+      pasteSeed: true,
+      found: false,
+    });
   }
 
   scanQR() {
     this.setState({
-      scanQR: true
+      scanQR: true,
+      found: false,
     });
   }
 
@@ -40,25 +51,40 @@ class SeedMenu extends Component {
       if (typeof data === 'string') {
         this.setState({
           result: data,
+          found: true,
         });
-        this.props.changeWords(data);
       }
     }
   }
 
+  updateSeed() {
+    this.setState({
+      scanQR: false,
+      pasteSeed: false,
+    })
+    this.props.changeWords(this.state.result);
+  }
+
   handleError(err) {
     this.setState({
-      result: err.message
+      result: err.message,
+      found: false,
     });
   }
 
   render() {
     const actions = [
-      <RaisedButton
+      <FlatButton
         label="Cancel"
-        primary={true}
+        primary={false}
         onClick={() => { this.handleClose() }}
-      />
+      />,
+      <RaisedButton
+        label="Use"
+        primary={true}
+        keyboardFocused={true}
+        disabled={!this.state.found}
+        onClick={() => { this.updateSeed() }} />,
     ];
 
     const previewStyle = {
@@ -82,6 +108,21 @@ class SeedMenu extends Component {
               onScan={(data) => { this.handleScan(data) }}/>
 
             <p style={{wordWrap: 'break-word'}}>{this.state.result}</p>
+          </div>
+
+        </Dialog>
+
+        <Dialog
+          title="Paste Seed"
+          modal={false}
+          actions={actions}
+          open={this.state.pasteSeed}>
+
+          <div>
+            <TextField
+              hintText="Paste seed here"
+              fullWidth={true}
+              onChange={(event, value) => { this.handleScan(value) }}/>
           </div>
 
         </Dialog>
