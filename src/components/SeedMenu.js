@@ -36,10 +36,14 @@ class SeedMenu extends Component {
   }
 
   handleScan(data) {
-    this.setState({
-      result: data,
-    });
-    // this.props.changeWords(data);
+    if (data !== undefined && data !== nula && data !== '') {
+      if (typeof data === 'string') {
+        this.setState({
+          result: data,
+        });
+        this.props.changeWords(data);
+      }
+    }
   }
 
   handleError(err) {
