@@ -7,14 +7,16 @@ import Avatar from 'material-ui/Avatar';
 import Snackbar from 'material-ui/Snackbar';
 import AppBar from 'material-ui/AppBar';
 import Divider from 'material-ui/Divider';
+import Spa from 'material-ui/svg-icons/places/spa';
 import Settings from 'material-ui/svg-icons/action/settings';
 import Help from 'material-ui/svg-icons/action/help';
 
 import Bip39 from '../utils/Bip39';
 import Philosophy from './Philosophy';
-import Seed from './Seed';
+import SeedView from './SeedView';
 import SeedMenu from './SeedMenu';
 import AddressView from './AddressView';
+import SettingsView from './SettingsView';
 
 window.DEFAULT_WORD_COUNT = 12;
 
@@ -36,8 +38,8 @@ class App extends Component {
       open: false,
       slideIndex: 0,
       secureRandom: this.bip39.hasSecureRandom(),
-      words: this.bip39.generate(window.DEFAULT_WORD_COUNT),
-      // words: 'stumble offer wisdom',
+      // words: this.bip39.generate(window.DEFAULT_WORD_COUNT),
+      words: 'stumble offer wisdom',
       networks: networks,
       passphrase: '',
     };
@@ -121,8 +123,12 @@ class App extends Component {
             <Divider />
             <MenuItem
               onClick={() => this.setState({slideIndex: 1, open: false})}
-              leftIcon={<Settings />}
+              leftIcon={<Spa />}
               primaryText="Seed" />
+            <MenuItem
+              onClick={() => this.setState({slideIndex: 2, open: false})}
+              leftIcon={<Settings />}
+              primaryText="Settings" />
             <MenuItem
               onClick={() => this.philosophy.handleOpen() }
               leftIcon={<Help />}
@@ -143,10 +149,12 @@ class App extends Component {
             passphrase={this.state.passphrase}
             ref={instance => { this.addressView = instance; }} />
 
-          <Seed
+          <SeedView
             words={this.state.words}
             changeWords={this.changeWords}
             changePassphrase={this.changePassphrase}/>
+
+          <SettingsView />
 
         </SwipeableViews>
 

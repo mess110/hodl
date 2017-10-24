@@ -16,7 +16,7 @@ AutoComplete.startsWith = (searchText, key) => {
   return searchText !== '' && key.indexOf(searchText) === 0;
 }
 
-class Seed extends Component {
+class SeedView extends Component {
   constructor(props) {
     super(props);
     this.bip39 = new Bip39();
@@ -137,4 +137,4 @@ class Seed extends Component {
   }
 }
 
-export default Seed;
+export default SeedView;

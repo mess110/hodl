@@ -59,9 +59,8 @@ export default class Bip39 {
 
   getAddress(bip32ExtendedKey, index, network) {
     var key = bip32ExtendedKey.derive(index);
+    var privKey, pubKey, address;
 
-    var privKey, pubKey;
-    var address;
     if (!network.ethereum) {
       address = key.getAddress().toString();
     } else {
@@ -82,11 +81,23 @@ export default class Bip39 {
       pubKey = "0x" + pubKey;
     }
 
-    return {
-      address: address,
-      pubKey: pubKey,
-      privKey: privKey,
+    var result = this.blankKey();
+
+    if (network.name === 'Bitcoin') {
+      var pubBuffer = key.getPublicKeyBuffer();
+      var witnessScript = bitcoin.script.witnessPubKeyHash.output.encode(bitcoin.crypto.hash160(pubBuffer));
+      var scriptPubKey = bitcoin.script.scriptHash.output.encode(bitcoin.crypto.hash160(witnessScript));
+      var segwitAddress = bitcoin.address.fromOutputScript(scriptPubKey);
+      result.segwit = segwitAddress;
     }
+
+    result.address = address;
+    result.pubKey = pubKey;
+    result.privKey = privKey;
+
+    // console.log(result);
+
+    return result;
   }
 
   blankKey() {
@@ -94,6 +105,7 @@ export default class Bip39 {
       address: '',
       pubKey: '',
       privKey: '',
+      segwit: '',
     }
   }
 
