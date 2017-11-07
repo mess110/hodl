@@ -23,6 +23,7 @@ to loose coins.
 - [x] show qr code
 - [x] change seed
 - [x] password protected seed
+- [ ] https://github.com/iancoleman/shamir39
 - [ ] fix offline use
 - [ ] update addresses after seed change
 - [ ] segwit addresses
