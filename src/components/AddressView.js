@@ -3,8 +3,9 @@ import TextField from 'material-ui/TextField';
 import SwipeableViews from 'react-swipeable-views';
 import RaisedButton from 'material-ui/RaisedButton';
 
-import Bip39 from '../utils/Bip39';
 import Address from './Address.js';
+import Bip39 from '../utils/Bip39';
+import Balance from './Balance';
 
 import './AddressView.css';
 
@@ -30,6 +31,9 @@ class AddressView extends Component {
       network: network,
     });
     this.updateAddress(undefined, 0, network);
+    if (this.balance) {
+      this.balance.estimateFee(network);
+    }
   }
 
   updateAddress(event, inputValue, network) {
@@ -71,6 +75,8 @@ class AddressView extends Component {
       <div>
         <div style={{paddingTop: 6, paddingLeft: 12, paddingRight: 12}}>
           <SwipeableViews index={this.state.slideIndex}>
+
+            <Balance ref={instance => { this.balance = instance; }}/>
 
             <div style={{textAlign: 'center'}}>
               <Address text={this.state.address.pubKey} />

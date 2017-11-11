@@ -42,9 +42,11 @@ class App extends Component {
       words: 'stumble offer wisdom',
       networks: networks,
       passphrase: '',
+      danger: false,
     };
 
 
+    this.toggleDanger = this.toggleDanger.bind(this);
     this.changeWords = this.changeWords.bind(this);
     this.changePassphrase = this.changePassphrase.bind(this);
   }
@@ -93,6 +95,12 @@ class App extends Component {
     console.log('hello')
     this.setState({
       words: 'pizza pizza pizza'
+    })
+  }
+
+  toggleDanger() {
+    this.setState({
+      danger: !this.state.danger
     })
   }
 
@@ -154,7 +162,9 @@ class App extends Component {
             changeWords={this.changeWords}
             changePassphrase={this.changePassphrase}/>
 
-          <SettingsView />
+          <SettingsView
+            danger={this.state.danger}
+            toggleDanger={this.toggleDanger}/>
 
         </SwipeableViews>
 

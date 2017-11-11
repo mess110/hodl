@@ -22,6 +22,7 @@ export default class Bip39 {
     var phrase = words;
     var derivationPath = "m/44'/" + coin + "'/0'/0";
     var path = derivationPath;
+    console.log(path);
 
     var properSeed = this.makeProperPhrase(phrase);
     var seed = this.mnemonic.toSeed(properSeed, passphrase);
@@ -51,7 +52,7 @@ export default class Bip39 {
     // var extendedPrivKey = bip32ExtendedKey.toBase58();
     // console.log(extendedPrivKey);
 
-    // var extendedPubKey = bip32ExtendedKey.toBase58(false);
+    // var extendedPubKey = bip32ExtendedKey.neutered().toBase58()
     // console.log(extendedPubKey)
 
     return bip32ExtendedKey;

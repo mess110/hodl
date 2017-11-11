@@ -5,6 +5,16 @@ const coinNetworks = {
   litecoin: defaultNetworks.litecoin,
   dogecoin: defaultNetworks.dogecoin,
   dash: defaultNetworks.dash,
+  bitcoinCash: {
+    bip32: {
+      private: 76066276,
+      public: 76067358
+    },
+    messagePrefix: "Bitcoin Signed Message:↵",
+    pubKeyHash: 28,
+    scriptHash: 40,
+    wif: 128
+  },
   eth: {
     bip32: {
         public: 0xffffffff,
@@ -42,19 +52,22 @@ const networks = [
     name: 'Bitcoin',
     identifier: 'bitcoin',
     value: 0,
-    network: coinNetworks.bitcoin
+    network: coinNetworks.bitcoin,
+    feeEstimation: true,
   },
   {
     name: 'Dash',
     identifier: 'dash',
     value: 5,
     network: coinNetworks.dash,
+    feeEstimation: false,
   },
   {
     name: 'Dogecoin',
     identifier: 'dogecoin',
     value: 3,
     network: coinNetworks.dogecoin,
+    feeEstimation: false,
   },
   {
     name: 'Ethereum',
@@ -62,6 +75,7 @@ const networks = [
     value: 60,
     network: coinNetworks.bitcoin,
     ethereum: true,
+    feeEstimation: false,
   },
   {
     name: 'Ethereum Classic',
@@ -69,19 +83,22 @@ const networks = [
     value: 61,
     network: coinNetworks.bitcoin,
     ethereum: true,
+    feeEstimation: false,
   },
   {
     name: 'Litecoin',
     identifier: 'litecoin',
     value: 2,
     network: coinNetworks.litecoin,
+    feeEstimation: false,
   },
-  // {
-    // name: 'Bitcoin Cash',
-    // identifier: 'bitcoin-cash',
-    // value: 145,
-    // network: window.bitcoin.networks.bitcoin,
-  // },
+  {
+    name: 'Bitcoin Cash',
+    identifier: 'bitcoin-cash',
+    value: 145,
+    network: coinNetworks.bitcoin,
+    feeEstimation: false,
+  },
   // {
     // name: 'Blackcoin',
     // identifier: 'blackcoin',
@@ -578,4 +595,4 @@ const networks = [
   return 0;
 });
 
-export default networks
+export default networks;
